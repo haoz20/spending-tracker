@@ -53,8 +53,4 @@ Spending Tracker is a web application designed to help users manage their person
    pnpm run dev
    ```
 
-## Usage
-1. Open your browser and navigate to `http://localhost:5173`.
-2. Explore the features and manage your expenses.
-
 
