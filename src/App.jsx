@@ -1,34 +1,42 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useRef } from 'react'
+import SpendingTable from './components/SpendingTable'
+import { useLocalStorage } from 'react-use'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
+  const [customCategory, setCustomCategory] = useLocalStorage('customCategory', []);
+
+  const category = useRef();
+  const description = useRef();
+
+  const onSubmit = (event) => {
+    event.preventDefault();
+    const newCategory = {
+      category: category.current.value,
+      description: description.current.value,
+    }
+    console.log('New Category:', newCategory);
+    setCustomCategory([...customCategory, newCategory]);
+
+  }
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+    <form onSubmit={onSubmit}>
+      <label htmlFor="category">Category</label>
+      <input type="text" id="category" ref={category} />
+      <br />
+      <label htmlFor="description">Description</label>
+      <input type="text" id="description" ref={description} />
+      <br />
+      <button type="submit">Save New Category</button>
+    </form>
+      <button>Daily</button>
+      <button>Weekly</button>
+      <button>Monthly</button>
+      <SpendingTable></SpendingTable>
     </>
+
   )
 }
 
