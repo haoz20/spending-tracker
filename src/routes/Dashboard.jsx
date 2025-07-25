@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react'
-import SpendingTable from '../components/SpendingTable'
 import { useLocalStorage } from 'react-use'
+import { ListItem } from '@mui/material';
+import TotalSpending from '../components/TotalSpending';
 
 function Dashboard() {
   const [count, setCount] = useState(0);
@@ -27,12 +28,6 @@ function Dashboard() {
 
   }
 
-  const onDeleteItem = (index) => {
-    spendingData.splice(index, 1);
-    setSpendingData([...spendingData]);
-  }
-
-
 
   return (
     <>
@@ -45,10 +40,9 @@ function Dashboard() {
         <br />
         <button type="submit">Save New Category</button>
       </form>
-      
-      <SpendingTable
-        data={spendingData}
-        onDeleteRecord={onDeleteItem}/>
+
+      <TotalSpending data={spendingData} />
+
     </>
 
 
