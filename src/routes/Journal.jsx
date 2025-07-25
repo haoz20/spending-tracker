@@ -5,12 +5,13 @@ import spendingCategory from '../data/spending_category.json';
 function Journal() {
 
     const [spendingData, setSpendingData] = useLocalStorage('spendingData', []);
+    const [lastId, setLastId] = useLocalStorage('lastId', 0);
 
     const amount = useRef();
     const category = useRef();
     const date = useRef();
 
-    const today = new Date()
+    const today = new Date().toISOString().split('T')[0];
     console.log(today);
 
     const handleSubmit = (event) => {
@@ -21,12 +22,17 @@ function Journal() {
         }
 
         const newRecord = {
+            spending_id: lastId + 1,
             amount: parseInt(amount.current.value),
             category: category.current.value,
             date: date.current.value,
         }
         console.log('New Record:', newRecord);
         setSpendingData([...spendingData, newRecord]);
+        setLastId(lastId + 1);
+        amount.current.value = '';
+        category.current.value = '';
+        date.current.value = today.toISOString().split('T')[0]; // Reset date to
     };
 
     return (
@@ -43,7 +49,7 @@ function Journal() {
                 ))}
             </select>
             <label htmlFor="date">Date: </label>
-            <input type="date" ref={date} />
+            <input type="date" ref={date} defaultValue={today} />
             <button type="submit">Add Record</button>
         </form>
     );
