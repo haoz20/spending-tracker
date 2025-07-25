@@ -1,4 +1,4 @@
-import spendingData from '../data/spending_data.json';
+import spendingCategory from '../data/spending_category.json';
 
 
 function SpendingTable() {
@@ -17,7 +17,7 @@ function SpendingTable() {
                 </tr>
             </thead>
             <tbody>
-                {spendingData.map((item, index) => (
+                {spendingCategory.map((item, index) => (
                     <tr key={index}>
                         <td>{item.spending_id}</td>
                         <td></td>
