@@ -6,6 +6,8 @@ function Dashboard() {
   const [count, setCount] = useState(0);
   const [customCategory, setCustomCategory] = useLocalStorage('customCategory', []);
 
+  const [spendingData, setSpendingData] = useLocalStorage('spendingData', []);
+
   const category = useRef();
   const description = useRef();
 
@@ -25,21 +27,28 @@ function Dashboard() {
 
   }
 
+  const onDeleteItem = (index) => {
+    spendingData.splice(index, 1);
+    setSpendingData([...spendingData]);
+  }
+
+
+
   return (
     <>
-    <form onSubmit={onSubmit}>
-      <label htmlFor="category">Category</label>
-      <input type="text" id="category" ref={category} />
-      <br />
-      <label htmlFor="description">Description</label>
-      <input type="text" id="description" ref={description} />
-      <br />
-      <button type="submit">Save New Category</button>
-    </form>
-      <button>Daily</button>
-      <button>Weekly</button>
-      <button>Monthly</button>
-      <SpendingTable></SpendingTable>
+      <form onSubmit={onSubmit}>
+        <label htmlFor="category">Category</label>
+        <input type="text" id="category" ref={category} />
+        <br />
+        <label htmlFor="description">Description</label>
+        <input type="text" id="description" ref={description} />
+        <br />
+        <button type="submit">Save New Category</button>
+      </form>
+      
+      <SpendingTable
+        data={spendingData}
+        onDeleteRecord={onDeleteItem}/>
     </>
 
 
