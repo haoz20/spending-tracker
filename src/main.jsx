@@ -11,11 +11,11 @@ import Dashboard from './routes/Dashboard.jsx';
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: '/spending-tracker/',
     element: <App />,
     children: [
       {
-        path: '/',
+        index: true,
         element: <Dashboard />,
       },
       {
