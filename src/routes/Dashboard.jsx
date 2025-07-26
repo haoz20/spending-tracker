@@ -1,6 +1,6 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useLocalStorage } from 'react-use'
-import { ListItem } from '@mui/material';
+import { ListItem, speedDialActionClasses } from '@mui/material';
 import TotalSpending from '../components/TotalSpending';
 
 function Dashboard() {
@@ -11,6 +11,11 @@ function Dashboard() {
 
   const category = useRef();
   const description = useRef();
+
+  useEffect(() => {
+          const sortedData = [...spendingData].sort((a, b) => new Date(b.date) - new Date(a.date));
+          setSpendingData(sortedData);
+      }, []);
 
   const onSubmit = (event) => {
     event.preventDefault();
