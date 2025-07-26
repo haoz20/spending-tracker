@@ -12,10 +12,10 @@ function NavBar() {
         <nav>
             <ul>
                 <li>
-                    <Link to="/">Dashboard</Link>
+                    <Link to="/spending-tracker/">Dashboard</Link>
                 </li>
                 <li>
-                    <Link to="/journal">Journal</Link>
+                    <Link to="/spending-tracker/journal">Journal</Link>
                 </li>
             </ul>
         </nav>
