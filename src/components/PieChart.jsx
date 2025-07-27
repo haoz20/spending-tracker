@@ -77,15 +77,15 @@ function SpendingPieChart({ data, timeframe, allTimeData }) {
   const allTimePieData = getAllTimePieChartData();
 
   return (
-    <Stack direction={{ xs: 'row', md: 'column' }} spacing={2} sx={{ width: '100%', mt: 2 }}>
+    <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} sx={{ width: '100%', mt: 2 }}>
       {/* All-Time Pie Chart */}
-      <Paper elevation={3} sx={{ flex: 1, p: 2, minWidth: 0 }}>
+      <Paper elevation={3} sx={{ flex: 1, p: 2, minWidth: 0, width: '100%' }}>
         <Typography variant="h6" gutterBottom>All-Time Spending by Category</Typography>
         <Typography sx={{ mb: 2, fontWeight: 'bold' }}>
           Total spending (All Time): {getAllTimeTotalSpending()}฿
         </Typography>
-        {allTimePieData.length > 0 ? (
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <Box sx={{ width: '100%', minHeight: 250, display: 'flex', justifyContent: 'center', overflowX: 'auto' }}>
+          {allTimePieData.length > 0 ? (
             <PieChart
               series={[
                 {
@@ -94,17 +94,17 @@ function SpendingPieChart({ data, timeframe, allTimeData }) {
                   faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' },
                 },
               ]}
-              width={400}
-              height={350}
+              width={350}
+              height={300}
+              sx={{ width: '100%', minWidth: 250 }}
             />
-          </div>
-        ) : (
-          <Typography color="text.secondary">No spending data available for all time.</Typography>
-        )}
-        
+          ) : (
+            <Typography color="text.secondary">No spending data available for all time.</Typography>
+          )}
+        </Box>
       </Paper>
       {/* Period Pie Chart */}
-      <Paper elevation={3} sx={{ flex: 1, p: 2, minWidth: 0 }}>
+      <Paper elevation={3} sx={{ flex: 1, p: 2, minWidth: 0, width: '100%' }}>
         <Typography variant="h6" gutterBottom>Spending Breakdown by Category - Period</Typography>
         {/* Period selector */}
         <Box sx={{ mb: 2, display: 'flex', alignItems: 'center' }}>
@@ -130,9 +130,8 @@ function SpendingPieChart({ data, timeframe, allTimeData }) {
             Total spending for {selectedPeriod}: {getPeriodTotalSpending()}฿
           </Typography>
         )}
-        {/* Pie Chart */}
-        {periodPieData.length > 0 ? (
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <Box sx={{ width: '100%', minHeight: 250, display: 'flex', justifyContent: 'center', overflowX: 'auto' }}>
+          {periodPieData.length > 0 ? (
             <PieChart
               series={[
                 {
@@ -141,16 +140,16 @@ function SpendingPieChart({ data, timeframe, allTimeData }) {
                   faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' },
                 },
               ]}
-              width={400}
-              height={350}
+              width={350}
+              height={300}
+              sx={{ width: '100%', minWidth: 250 }}
             />
-          </div>
-        ) : selectedPeriod ? (
-          <Typography>No spending data available for the selected period.</Typography>
-        ) : (
-          <Typography>Please select a period to view the spending breakdown.</Typography>
-        )}
-        
+          ) : selectedPeriod ? (
+            <Typography>No spending data available for the selected period.</Typography>
+          ) : (
+            <Typography>Please select a period to view the spending breakdown.</Typography>
+          )}
+        </Box>
       </Paper>
     </Stack>
   );
