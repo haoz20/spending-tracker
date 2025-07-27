@@ -35,7 +35,7 @@ Spending Tracker is a web application designed to help users manage their person
    - Date (no time)
    - Spending category (from the list)
    - Amount
-- <img src="src/assets/screenshots/journal_page.png" alt="Input Record Page"/>
+<img src="src/assets/screenshots/journal_page.png" alt="Input Record Page"/>
 
 ## Installation
 1. Clone the repository:
