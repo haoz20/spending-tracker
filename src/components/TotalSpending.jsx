@@ -150,7 +150,7 @@ function TotalSpending({ data }) {
     return (
         <>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 16 }}>
+            <Box style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 16 }}>
                 <FormControl size="small" sx={{ minWidth: 160 }}>
                     <InputLabel id="timeframe-label">Timeframe</InputLabel>
                     <Select
@@ -166,15 +166,15 @@ function TotalSpending({ data }) {
                     </Select>
                 </FormControl>
                 <p style={{ margin: 0 }}>Total Spending of all time: {totalSpending}฿ </p>
-            </div>
+            </Box>
             <List sx={{ maxHeight: 300, overflow: 'auto', bgcolor: 'background.paper', borderRadius: 2, boxShadow: 1 }}>
                 {filteredData.map(([month, monthData]) => (
-                    <ListItem key={month} alignItems="flex-start" sx={{ display: 'block', borderBottom: '1px solid #eee' }}>
-                        <strong>{month} {monthData.total}฿</strong>
+                    <ListItem key={month} alignItems="flex-start" sx={{ display: 'block', borderBottom: '1px solid #eee', fontFamily: 'Inter, Roboto, Arial, sans-serif', fontWeight: 600 }}>
+                        <span style={{ fontWeight: 700 }}>{month} <span style={{ color: '#c76a37ff', fontWeight: 700 }}>{monthData.total}฿</span></span>
                         <List sx={{ pl: 2 }}>
                             {Object.entries(monthData.categories).map(([category, { total }]) => (
-                                <ListItem key={category} sx={{ py: 0.5, px: 0 }}>
-                                    {category}: {total}฿
+                                <ListItem key={category} sx={{ py: 0.5, px: 0, fontFamily: 'Inter, Roboto, Arial, sans-serif', fontWeight: 400 }}>
+                                    <span style={{ fontWeight: 500 }}>{category}</span>: <span style={{ color: '#1976d2', fontWeight: 600 }}>{total}฿</span>
                                 </ListItem>
                             ))}
                         </List>
@@ -184,26 +184,23 @@ function TotalSpending({ data }) {
             
             
             <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} sx={{ width: '100%', mt: 2 }}>
-            
-
-            <Paper elevation={3} sx={{ flex: 1, p: 2, minWidth: 0 }}>
-                <Typography variant="h6" gutterBottom>All Time Spending</Typography>
-                <SpendingLineChart
-                    data={filteredData}
-                    timeframe={timeframe}
-                    allTimeData={allTimeData}
-                    title="All Time Spending"
-                />
-            </Paper>
-
-            <Paper elevation={3} sx={{ mt: 3, p: 2 }}>
-                <Typography variant="h6" gutterBottom>Spending Breakdown (Pie Chart)</Typography>
-                <SpendingPieChart
-                    data={filteredData}
-                    timeframe={timeframe}
-                    allTimeData={allTimeData}
-                />
-            </Paper>
+                <Paper elevation={3} sx={{ flex: 1, p: 2, minWidth: 0, display: 'flex', flexDirection: 'column' }}>
+                    <Typography variant="h6" gutterBottom>Line Chart</Typography>
+                    <SpendingLineChart
+                        data={filteredData}
+                        timeframe={timeframe}
+                        allTimeData={allTimeData}
+                        title="All Time Spending"
+                    />
+                </Paper>
+                <Paper elevation={3} sx={{ flex: 1, p: 2, minWidth: 0, display: 'flex', flexDirection: 'column' }}>
+                    <Typography variant="h6" gutterBottom>Pie Chart</Typography>
+                    <SpendingPieChart
+                        data={filteredData}
+                        timeframe={timeframe}
+                        allTimeData={allTimeData}
+                    />
+                </Paper>
             </Stack>
         </>
     )
