@@ -1,77 +1,177 @@
-import { useState, useRef } from 'react';
 import { useLocalStorage } from 'react-use';
-import SpendingTable from '../components/SpendingTable'
+import { useForm, Controller } from 'react-hook-form';
+import { 
+  Box, 
+  TextField, 
+  Select, 
+  MenuItem, 
+  FormControl, 
+  InputLabel, 
+  Button, 
+  Typography, 
+  Container,
+  Paper,
+  FormHelperText
+} from '@mui/material';
+import { Add as AddIcon } from '@mui/icons-material';
+import SpendingTable from '../components/SpendingTable';
 import spendingCategory from '../data/spending_category.json';
 
 function Journal() {
+    const { 
+        control, 
+        handleSubmit, 
+        reset, 
+        formState: { errors } 
+    } = useForm({
+        defaultValues: {
+            amount: '',
+            category: '',
+            date: new Date().toISOString().split('T')[0]
+        }
+    });
 
     const [spendingData, setSpendingData] = useLocalStorage('spendingData', []);
     const [customCategory, setCustomCategory] = useLocalStorage('customCategory', []);
     const [lastId, setLastId] = useLocalStorage('lastId', 0);
 
-    const amount = useRef();
-    const category = useRef();
-    const date = useRef();
-
     const today = new Date().toISOString().split('T')[0];
-    console.log(today);
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        if (!amount.current.value || !category.current.value || !date.current.value) {
-            alert('Please fill out all fields.');
-            return;
-        }
-
+    const onSubmit = (data) => {
         const newRecord = {
             spending_id: lastId + 1,
-            amount: parseInt(amount.current.value),
-            category: category.current.value,
-            date: date.current.value,
-        }
+            amount: parseInt(data.amount),
+            category: data.category,
+            date: data.date,
+        };
+        
         console.log('New Record:', newRecord);
         setSpendingData([...spendingData, newRecord]);
         setLastId(lastId + 1);
-        amount.current.value = '';
-        category.current.value = '';
-        date.current.value = today; // Reset date to
+        
+        // Reset form with today's date
+        reset({
+            amount: '',
+            category: '',
+            date: today
+        });
     };
 
     const onDeleteItem = (index) => {
-        const updatedData = [...spendingData]; // Create a shallow copy of the array
-        updatedData.splice(index, 1); // Remove the item at the specified index
-        setSpendingData(updatedData); // Update state with the modified array
+        const updatedData = [...spendingData];
+        updatedData.splice(index, 1);
+        setSpendingData(updatedData);
     };
 
     return (
-        <>
-            <form onSubmit={handleSubmit}>
-                <label>Amount: </label>
-                <input type="number" ref={amount} />
-                <label htmlFor="category">Category: </label>
-                <select name="category" id="category" ref={category} defaultValue={""}>
-                    <option value={""}>
-                        Select a category
-                    </option>
-                    {spendingCategory.map((item, index) => (
-                        <option key={index} value={item.category}>{item.category}</option>
-                    ))}
-                    <option disabled>Custom Category</option>
-                    {customCategory.map((item, index) => (
-                        <option key={index} value={item.category}>{item.category}</option>
-                    ))}
-                </select>
-                <label htmlFor="date">Date: </label>
-                <input type="date" ref={date} defaultValue={today} />
-                <button type="submit">Add Record</button>
-            </form>
+        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+            <Paper elevation={3} sx={{ p: 4, mb: 4 }}>
+                <Typography variant="h4" component="h1" gutterBottom>
+                    Add Spending Record
+                </Typography>
+                
+                <Box
+                    component="form"
+                    onSubmit={handleSubmit(onSubmit)}
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: 3,
+                        maxWidth: 600
+                    }}
+                >
+                    <Controller
+                        name="amount"
+                        control={control}
+                        rules={{ 
+                            required: 'Amount is required',
+                            min: { value: 1, message: 'Amount must be greater than 0' }
+                        }}
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                label="Amount (฿)"
+                                type="number"
+                                variant="outlined"
+                                error={!!errors.amount}
+                                helperText={errors.amount?.message}
+                                fullWidth
+                            />
+                        )}
+                    />
+
+                    <Controller
+                        name="category"
+                        control={control}
+                        rules={{ required: 'Category is required' }}
+                        render={({ field }) => (
+                            <FormControl fullWidth error={!!errors.category}>
+                                <InputLabel>Category</InputLabel>
+                                <Select
+                                    {...field}
+                                    label="Category"
+                                >
+                                    {spendingCategory.map((item, index) => (
+                                        <MenuItem key={index} value={item.category}>
+                                            {item.category}
+                                        </MenuItem>
+                                    ))}
+                                    {customCategory.length > 0 && (
+                                        <MenuItem disabled>
+                                            <em>Custom Categories</em>
+                                        </MenuItem>
+                                    )}
+                                    {customCategory.map((item, index) => (
+                                        <MenuItem key={`custom-${index}`} value={item.category}>
+                                            {item.category}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                                {errors.category && (
+                                    <FormHelperText>{errors.category.message}</FormHelperText>
+                                )}
+                            </FormControl>
+                        )}
+                    />
+
+                    <Controller
+                        name="date"
+                        control={control}
+                        rules={{ required: 'Date is required' }}
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                label="Date"
+                                type="date"
+                                variant="outlined"
+                                error={!!errors.date}
+                                helperText={errors.date?.message}
+                                fullWidth
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                            />
+                        )}
+                    />
+
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        size="large"
+                        startIcon={<AddIcon />}
+                        sx={{ alignSelf: 'flex-start' }}
+                    >
+                        Add Record
+                    </Button>
+                </Box>
+            </Paper>
 
             <SpendingTable
                 data={spendingData}
-                onDeleteRecord={onDeleteItem} />
-        </>
+                onDeleteRecord={onDeleteItem}
+            />
+        </Container>
     );
 }
-
 
 export default Journal;
