@@ -100,7 +100,9 @@ function SpendingLineChart({ data, timeframe, allTimeData }) {
         )}
       </Paper>
       <Paper elevation={3} sx={{ flex: 1, p: 2, minWidth: 0 }}>
-        <Typography variant="h6" gutterBottom>Spending by Category - {getAxisLabel()}</Typography>
+        <Typography variant="h6" gutterBottom>
+          Spending by Category - <span style={{ color: '#1976d2', fontWeight: 700 }}>{getAxisLabel()}</span>
+        </Typography>
         {timeframeChart.dataset.length > 0 ? (
           <LineChart
             dataset={timeframeChart.dataset}

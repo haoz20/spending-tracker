@@ -4,6 +4,7 @@ import React from 'react';
 import Stack from '@mui/material/Stack';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
+import {InputLabel, Select, MenuItem, Box} from '@mui/material';
 
 
 function SpendingPieChart({ data, timeframe, allTimeData }) {
@@ -79,7 +80,7 @@ function SpendingPieChart({ data, timeframe, allTimeData }) {
     <Stack direction={{ xs: 'row', md: 'column' }} spacing={2} sx={{ width: '100%', mt: 2 }}>
       {/* All-Time Pie Chart */}
       <Paper elevation={3} sx={{ flex: 1, p: 2, minWidth: 0 }}>
-        <Typography variant="h6" gutterBottom>All-Time Spending Breakdown</Typography>
+        <Typography variant="h6" gutterBottom>All-Time Spending by Category</Typography>
         <Typography sx={{ mb: 2, fontWeight: 'bold' }}>
           Total spending (All Time): {getAllTimeTotalSpending()}฿
         </Typography>
@@ -106,23 +107,23 @@ function SpendingPieChart({ data, timeframe, allTimeData }) {
       <Paper elevation={3} sx={{ flex: 1, p: 2, minWidth: 0 }}>
         <Typography variant="h6" gutterBottom>Spending Breakdown by Category - Period</Typography>
         {/* Period selector */}
-        <div style={{ marginBottom: '20px' }}>
-          <label htmlFor="period-select" style={{ marginRight: '10px' }}>
+        <Box sx={{ mb: 2, display: 'flex', alignItems: 'center' }}>
+          <InputLabel htmlFor="period-select" sx={{ mr: 2 }}>
             {getPeriodLabel()}:
-          </label>
-          <select
+          </InputLabel>
+          <Select
             id="period-select"
             value={selectedPeriod}
             onChange={(e) => setSelectedPeriod(e.target.value)}
-            style={{ padding: '5px', minWidth: '200px' }}
+            sx={{ minWidth: 200 }}
           >
             {data.map(([period]) => (
-              <option key={period} value={period}>
+              <MenuItem key={period} value={period}>
                 {period}
-              </option>
+              </MenuItem>
             ))}
-          </select>
-        </div>
+          </Select>
+        </Box>
         {/* Show total spending for selected period */}
         {selectedPeriod && (
           <Typography sx={{ mb: 2, fontWeight: 'bold' }}>
