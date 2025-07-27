@@ -37,7 +37,7 @@ function NavBar() {
                 <Tab
                     label="Dashboard"
                     component={Link}
-                    to="/spending-tracker/"
+                    to="/"
                     sx={{
                         color: '#fff',
                         fontWeight: 600,
@@ -47,7 +47,7 @@ function NavBar() {
                 <Tab
                     label="Journal"
                     component={Link}
-                    to="/spending-tracker/journal"
+                    to="/journal"
                     sx={{
                         color: '#fff',
                         fontWeight: 600,
