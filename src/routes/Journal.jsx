@@ -16,8 +16,16 @@ import {
 import { Add as AddIcon } from '@mui/icons-material';
 import SpendingTable from '../components/SpendingTable';
 import spendingCategory from '../data/spending_category.json';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
 
 function Journal() {
+    
+
+    const [spendingData, setSpendingData] = useLocalStorage('spendingData', []);
+    const [customCategory, setCustomCategory] = useLocalStorage('customCategory', []);
+    const [lastId, setLastId] = useLocalStorage('lastId', 0);
+
+    const today = new Date().toISOString().split('T')[0];
     const { 
         control, 
         handleSubmit, 
@@ -27,15 +35,9 @@ function Journal() {
         defaultValues: {
             amount: '',
             category: '',
-            date: new Date().toISOString().split('T')[0]
+            date: today
         }
     });
-
-    const [spendingData, setSpendingData] = useLocalStorage('spendingData', []);
-    const [customCategory, setCustomCategory] = useLocalStorage('customCategory', []);
-    const [lastId, setLastId] = useLocalStorage('lastId', 0);
-
-    const today = new Date().toISOString().split('T')[0];
 
     const onSubmit = (data) => {
         const newRecord = {
@@ -65,6 +67,12 @@ function Journal() {
 
     return (
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+            <Box sx={{ mb: 4, textAlign: 'center' }}>
+                <Typography variant="h3" component="h1" gutterBottom sx={{ fontWeight: 'bold' }}>
+                    <BookmarkIcon sx={{ mr: 2, fontSize: 'inherit' }} />
+                    Journal
+                </Typography>
+            </Box>
             <Paper elevation={3} sx={{ p: 4, mb: 4 }}>
                 <Typography variant="h4" component="h1" gutterBottom>
                     Add Spending Record
