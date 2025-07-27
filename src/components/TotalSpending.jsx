@@ -165,7 +165,9 @@ function TotalSpending({ data }) {
                         <MenuItem value="monthly">Monthly</MenuItem>
                     </Select>
                 </FormControl>
-                <p style={{ margin: 0 }}>Total Spending of all time: {totalSpending}฿ </p>
+                <Typography style={{ margin: 0, fontWeight: 700, color: '#1976d2', background: '#e3f2fd', borderRadius: 6, padding: '4px 12px' }}>
+                    Total Spending of all time: <span style={{ color: '#c76a37ff', fontWeight: 900 }}>{totalSpending}฿</span>
+                </Typography>
             </Box>
             <List sx={{ maxHeight: 300, overflow: 'auto', bgcolor: 'background.paper', borderRadius: 2, boxShadow: 1 }}>
                 {filteredData.map(([month, monthData]) => (
@@ -181,8 +183,8 @@ function TotalSpending({ data }) {
                     </ListItem>
                 ))}
             </List>
-            
-            
+
+
             <Stack direction={{ xs: 'row', md: 'column' }} spacing={2} sx={{ width: '100%', mt: 2 }}>
                 <Paper elevation={3} sx={{ flex: 1, p: 2, minWidth: 0, display: 'flex', flexDirection: 'column' }}>
                     <Typography variant="h6" gutterBottom>Line Chart</Typography>
