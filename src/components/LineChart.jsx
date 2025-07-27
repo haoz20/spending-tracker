@@ -3,6 +3,7 @@ import { LineChart } from '@mui/x-charts/LineChart';
 import Stack from '@mui/material/Stack';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 
 function SpendingLineChart({ data, timeframe, allTimeData }) {
   // All-time chart data preparation
@@ -75,53 +76,72 @@ function SpendingLineChart({ data, timeframe, allTimeData }) {
   };
 
   return (
-    <Stack direction={{ xs: 'row', md: 'column' }} spacing={2} sx={{ width: '100%' }}>
-      <Paper elevation={3} sx={{ flex: 1, p: 2, minWidth: 0 }}>
-        <Typography variant="h6" gutterBottom>All-Time Spending by Category</Typography>
-        {allTimeChart.dataset.length > 0 ? (
-          <LineChart
-            dataset={allTimeChart.dataset}
-            xAxis={[
-              {
-                dataKey: 'date',
-                scaleType: 'time',
-                label: 'Date',
-                valueFormatter: (date) => date.toLocaleDateString(),
-              },
-            ]}
-            yAxis={[{ width: 70 }]}
-            series={allTimeChart.series}
-            width={700}
-            height={400}
-            margin={{ left: 60, right: 40, top: 40, bottom: 60 }}
-          />
-        ) : (
-          <Typography color="text.secondary">No data available for all-time chart</Typography>
-        )}
-      </Paper>
-      <Paper elevation={3} sx={{ flex: 1, p: 2, minWidth: 0 }}>
+    <Stack
+      direction={{ xs: 'column', md: 'row' }}
+      spacing={2}
+      sx={{ width: '100%' }}
+    >
+      <Paper elevation={3} sx={{ flex: 1, p: 2, minWidth: 0, width: '100%' }}>
         <Typography variant="h6" gutterBottom>
-          Spending by Category - <span style={{ color: '#1976d2', fontWeight: 700 }}>{getAxisLabel()}</span>
+          All-Time Spending by Category
         </Typography>
-        {timeframeChart.dataset.length > 0 ? (
-          <LineChart
-            dataset={timeframeChart.dataset}
-            xAxis={[
-              {
-                dataKey: 'period',
-                scaleType: 'band',
-                label: getAxisLabel(),
-              },
-            ]}
-            yAxis={[{ width: 70, label: 'Amount (฿)' }]}
-            series={timeframeChart.series}
-            width={700}
-            height={400}
-            margin={{ left: 60, right: 40, top: 40, bottom: 60 }}
-          />
-        ) : (
-          <Typography color="text.secondary">No data available for timeframe chart</Typography>
-        )}
+        <Box sx={{ width: '100%', minHeight: 250, overflowX: 'auto' }}>
+          {allTimeChart.dataset.length > 0 ? (
+            <LineChart
+              dataset={allTimeChart.dataset}
+              xAxis={[
+                {
+                  dataKey: 'date',
+                  scaleType: 'time',
+                  label: 'Date',
+                  valueFormatter: (date) => date.toLocaleDateString(),
+                },
+              ]}
+              yAxis={[{ width: 70 }]}
+              series={allTimeChart.series}
+              width={600}
+              height={300}
+              margin={{ left: 60, right: 40, top: 40, bottom: 60 }}
+              sx={{ width: '100%', minWidth: 400 }}
+            />
+          ) : (
+            <Typography color="text.secondary">
+              No data available for all-time chart
+            </Typography>
+          )}
+        </Box>
+      </Paper>
+      <Paper elevation={3} sx={{ flex: 1, p: 2, minWidth: 0, width: '100%' }}>
+        <Typography variant="h6" gutterBottom>
+          Spending by Category -{' '}
+          <span style={{ color: '#1976d2', fontWeight: 700 }}>
+            {getAxisLabel()}
+          </span>
+        </Typography>
+        <Box sx={{ width: '100%', minHeight: 250, overflowX: 'auto' }}>
+          {timeframeChart.dataset.length > 0 ? (
+            <LineChart
+              dataset={timeframeChart.dataset}
+              xAxis={[
+                {
+                  dataKey: 'period',
+                  scaleType: 'band',
+                  label: getAxisLabel(),
+                },
+              ]}
+              yAxis={[{ width: 70, label: 'Amount (฿)' }]}
+              series={timeframeChart.series}
+              width={600}
+              height={300}
+              margin={{ left: 60, right: 40, top: 40, bottom: 60 }}
+              sx={{ width: '100%', minWidth: 400 }}
+            />
+          ) : (
+            <Typography color="text.secondary">
+              No data available for timeframe chart
+            </Typography>
+          )}
+        </Box>
       </Paper>
     </Stack>
   );

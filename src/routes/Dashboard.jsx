@@ -36,8 +36,7 @@ function Dashboard() {
     formState: { errors }
   } = useForm({
     defaultValues: {
-      category: '',
-      description: ''
+      category: ''
     }
   });
 
@@ -48,8 +47,7 @@ function Dashboard() {
 
   const onSubmit = (data) => {
     const newCategory = {
-      category: data.category,
-      description: data.description,
+      category: data.category
     };
 
     console.log('New Category:', newCategory);
@@ -61,6 +59,10 @@ function Dashboard() {
 
     // Reset form
     reset();
+  };
+
+  const handleRemoveCategories = () => {
+    setCustomCategory([]);
   };
 
   // Calculate statistics
@@ -114,12 +116,11 @@ function Dashboard() {
             </CardContent>
           </Card>
         </Grid>
-
       </Grid>
 
       {/* Centered Custom Category Form */}
       <Box sx={{ display: 'flex', justifyContent: 'center', mb: 4 }}>
-        <Paper elevation={3} sx={{ p: 4, maxWidth: 500, width: '100%' }}>
+        <Paper elevation={3} sx={{ p: 4, maxWidth: 400, width: '100%' }}>
           <Typography variant="h5" component="h2" gutterBottom sx={{
             display: 'flex',
             alignItems: 'center',
@@ -161,27 +162,7 @@ function Dashboard() {
                   error={!!errors.category}
                   helperText={errors.category?.message}
                   fullWidth
-                />
-              )}
-            />
-
-            <Controller
-              name="description"
-              control={control}
-              rules={{
-                required: 'Description is required',
-                minLength: { value: 5, message: 'Description must be at least 5 characters' }
-              }}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Description"
-                  variant="outlined"
-                  multiline
-                  rows={3}
-                  error={!!errors.description}
-                  helperText={errors.description?.message}
-                  fullWidth
+                  placeholder="e.g., Entertainment, Utilities, Healthcare"
                 />
               )}
             />
@@ -196,7 +177,7 @@ function Dashboard() {
                 fontWeight: 'bold'
               }}
             >
-              Save New Category
+              Add Category
             </Button>
           </Box>
 
@@ -206,7 +187,7 @@ function Dashboard() {
               <Typography variant="h6" gutterBottom>
                 Custom Categories ({customCategory.length})
               </Typography>
-              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, justifyContent: 'center' }}>
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, justifyContent: 'center', mb: 2 }}>
                 {customCategory.map((item, index) => (
                   <Chip
                     key={index}
@@ -217,6 +198,14 @@ function Dashboard() {
                   />
                 ))}
               </Box>
+              <Button 
+                variant="outlined" 
+                color="error" 
+                size="small"
+                onClick={handleRemoveCategories}
+              >
+                Clear All Categories
+              </Button>
             </Box>
           )}
         </Paper>

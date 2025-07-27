@@ -24,7 +24,7 @@ function NavBar() {
         //     </ul>
         // </nav>
 
-        <Box sx={{ width: '100vw', bgcolor: 'primary.main' }}>
+        <Box sx={{ width: '100', bgcolor: 'primary.main' }}>
             <Tabs
                 value={value}
                 onChange={handleChange}

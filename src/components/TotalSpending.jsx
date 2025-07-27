@@ -183,7 +183,7 @@ function TotalSpending({ data }) {
             </List>
             
             
-            <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} sx={{ width: '100%', mt: 2 }}>
+            <Stack direction={{ xs: 'row', md: 'column' }} spacing={2} sx={{ width: '100%', mt: 2 }}>
                 <Paper elevation={3} sx={{ flex: 1, p: 2, minWidth: 0, display: 'flex', flexDirection: 'column' }}>
                     <Typography variant="h6" gutterBottom>Line Chart</Typography>
                     <SpendingLineChart
