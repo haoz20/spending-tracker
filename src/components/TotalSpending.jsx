@@ -1,11 +1,17 @@
-import { BreakfastDining } from '@mui/icons-material';
+
 import { use } from 'react';
 import { useState, useRef, useEffect } from 'react';
 import { useLocalStorage } from 'react-use';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import { FormControl, InputLabel, Select, MenuItem, Paper, Stack, Typography, Box } from '@mui/material';
+import SpendingLineChart from './LineChart';
+import SpendingPieChart from './PieChart';
 
 function TotalSpending({ data }) {
     const [spendingData, setSpendingData] = useState(data);
     const [filteredData, setFilteredData] = useState([]);
+    const [allTimeData, setAllTimeData] = useState([]);
 
     const [timeframe, setTimeFrame] = useState('daily');
     const [totalSpending, setTotalSpending] = useState(0);
@@ -20,6 +26,36 @@ function TotalSpending({ data }) {
         startOfYear.setDate(startOfYear.getDate() + (startOfYear.getDay() % 7));
         return Math.round((date - startOfYear) / (7 * 24 * 3600 * 1000));
     };
+
+    // Generate all-time data (always daily for the all-time chart)
+    useEffect(() => {
+        const groupByDay = spendingData.reduce((byDay, item) => {
+            const date = new Date(item.date).toISOString().split('T')[0];
+            const category = item.category;
+            if (!byDay[date]) {
+                byDay[date] = {
+                    categories: {},
+                    total: 0
+                };
+            };
+            if (!byDay[date].categories[category]) {
+                byDay[date].categories[category] = {
+                    total: 0,
+                    items: []
+                }
+            }
+            byDay[date].categories[category].total += item.amount;
+            byDay[date].categories[category].items.push(item);
+            byDay[date].total += item.amount;
+            return byDay;
+        }, {});
+
+        // Sort by date for all-time chart
+        const sortedAllTimeData = Object.entries(groupByDay).sort(([a], [b]) =>
+            new Date(a) - new Date(b)
+        );
+        setAllTimeData(sortedAllTimeData);
+    }, [spendingData]);
 
     useEffect(() => {
         switch (timeframe) {
@@ -75,7 +111,7 @@ function TotalSpending({ data }) {
             case 'monthly':
                 const groupByMonth = spendingData.reduce((byMonth, item) => {
                     const date = new Date(item.date);
-                    const month = new Intl.DateTimeFormat("en-US", { month: 'long', year: 'numeric' }).format(date); /* things to note */
+                    const month = new Intl.DateTimeFormat("en-US", { month: 'long', year: 'numeric' }).format(date);
                     const category = item.category;
                     if (!byMonth[month]) {
                         byMonth[month] = {
@@ -96,7 +132,6 @@ function TotalSpending({ data }) {
                 }, {});
                 console.log('Monthly Data:', groupByMonth);
                 setFilteredData(Object.entries(groupByMonth));
-
                 break;
             default:
                 break;
@@ -112,39 +147,66 @@ function TotalSpending({ data }) {
         setTotalSpending(total);
     }, [spendingData]);
 
-
     return (
         <>
-            <select name="timeframe" id="timeframe" value={timeframe} onChange={handleFilterChange}>
-                <option value="daily">Daily</option>
-                <option value="weekly">Weekly</option>
-                <option value="monthly">Monthly</option>
-            </select>
-            <p>Total Spending of all time: {totalSpending}฿ </p>
-            <ul>
 
-                {
-                    filteredData.map(([month, monthData]) => (
-                        <li key={month}>
-                            <h3>{month} {monthData.total}</h3>
-                            <ul>
-                                {
-                                    Object.entries(monthData.categories).map(([category, { total }]) => (
-                                        <li key={category}>
-                                            {category}: {total}฿
-                                        </li>
-                                    ))
-                                }
-                            </ul>
-                        </li>
-                    ))
-                }
+            <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 16 }}>
+                <FormControl size="small" sx={{ minWidth: 160 }}>
+                    <InputLabel id="timeframe-label">Timeframe</InputLabel>
+                    <Select
+                        labelId="timeframe-label"
+                        id="timeframe"
+                        value={timeframe}
+                        label="Timeframe"
+                        onChange={handleFilterChange}
+                    >
+                        <MenuItem value="daily">Daily</MenuItem>
+                        <MenuItem value="weekly">Weekly</MenuItem>
+                        <MenuItem value="monthly">Monthly</MenuItem>
+                    </Select>
+                </FormControl>
+                <p style={{ margin: 0 }}>Total Spending of all time: {totalSpending}฿ </p>
+            </div>
+            <List sx={{ maxHeight: 300, overflow: 'auto', bgcolor: 'background.paper', borderRadius: 2, boxShadow: 1 }}>
+                {filteredData.map(([month, monthData]) => (
+                    <ListItem key={month} alignItems="flex-start" sx={{ display: 'block', borderBottom: '1px solid #eee' }}>
+                        <strong>{month} {monthData.total}฿</strong>
+                        <List sx={{ pl: 2 }}>
+                            {Object.entries(monthData.categories).map(([category, { total }]) => (
+                                <ListItem key={category} sx={{ py: 0.5, px: 0 }}>
+                                    {category}: {total}฿
+                                </ListItem>
+                            ))}
+                        </List>
+                    </ListItem>
+                ))}
+            </List>
+            
+            
+            <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} sx={{ width: '100%', mt: 2 }}>
+            
 
-            </ul>
+            <Paper elevation={3} sx={{ flex: 1, p: 2, minWidth: 0 }}>
+                <Typography variant="h6" gutterBottom>All Time Spending</Typography>
+                <SpendingLineChart
+                    data={filteredData}
+                    timeframe={timeframe}
+                    allTimeData={allTimeData}
+                    title="All Time Spending"
+                />
+            </Paper>
+
+            <Paper elevation={3} sx={{ mt: 3, p: 2 }}>
+                <Typography variant="h6" gutterBottom>Spending Breakdown (Pie Chart)</Typography>
+                <SpendingPieChart
+                    data={filteredData}
+                    timeframe={timeframe}
+                    allTimeData={allTimeData}
+                />
+            </Paper>
+            </Stack>
         </>
     )
 };
 
-export default TotalSpending
-
-
+export default TotalSpending;
