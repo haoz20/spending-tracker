@@ -29,11 +29,13 @@ Spending Tracker is a web application designed to help users manage their person
 
 ### Page 2: Journal
 1. A spending category is in MS Teams' File section [spending-category.json].
+<img src="src/assets/screenshots/select_category.png" alt="Select category"/>
 2. This is a single user app, there is no need to authenticate.
 3. The user enters a record by providing the following at least:
    - Date (no time)
    - Spending category (from the list)
    - Amount
+- <img src="src/assets/screenshots/journal_page.png" alt="Input Record Page"/>
 
 ## Installation
 1. Clone the repository:
