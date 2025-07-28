@@ -1,6 +1,6 @@
 # WAD (Section#541) Project01 - Spending Tracker
 
-## Live Demo
+## Deploy Link
 [Github Deploy Link](https://haoz20.github.io/spending-tracker/)
 
 ## Team Members
@@ -9,10 +9,13 @@
 - Kaung Myat San
 
 
-
 ## Built With
 ![vite](public/vite.svg)
 ![react](src/assets/react.svg)
+
+## Local Storage Implementation
+<img src="src/assets/screenshots/localstorage.png" alt="Local Storage Implementation"/>
+The spending data and custome category created are stored in the browser's local storage.
 
 ## Page 1 (Analytics Dashboard)
 ![Dashboard](src/assets/screenshots/dashboard.png)
