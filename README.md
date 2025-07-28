@@ -1,26 +1,27 @@
 # WAD (Section#541) Project01 - Spending Tracker
 
+## Live Demo
+[Github Deploy Link](https://haoz20.github.io/spending-tracker/)
+
 ## Team Members
 - Swan Htet Aung
 - Thiri Htet
 - Kaung Myat San
 
-## Project Description
-Spending Tracker is a responsive web application designed to help users manage their personal finances. Users can track their expenses, set budgets, and visualize their spending habits through interactive charts.
 
-## Features
-- Add, edit, and delete expenses
-- Set monthly budgets
-- View spending trends with charts
-- Responsive design for mobile and desktop
 
-## Screenshots
-![Home Page](public/vite.svg)
-![Expense Tracker](src/assets/react.svg)
+## Built With
+![vite](public/vite.svg)
+![react](src/assets/react.svg)
+
+## Page 1 (Analytics Dashboard)
 ![Dashboard](src/assets/screenshots/dashboard.png)
+
+## Page 2 (Journal Page)
 ![Journal](src/assets/screenshots/journal.png)
 
-## Pages
+
+## Details of the pages
 ### Page 1: Analytics Dashboard
 1. The app shows the summary of spending by selecting to show one of the three options: Daily, Weekly, and Monthly, and group by spending category.
    - Total spending of all time
